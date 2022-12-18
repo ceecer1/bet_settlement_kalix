@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package customer.view;
+
+import "customer/domain/customer_domain.proto";
+import "kalix/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service CustomerByName {
+  option (kalix.codegen) = {
+    view: {}
+  };
+
+  rpc UpdateCustomer(domain.CustomerState) returns (domain.CustomerState) {
+    option (kalix.method).eventing.in = {
+      value_entity: "customers"
+    };
+    option (kalix.method).view.update = {
+      table: "customers"
+    };
+  }
+
+  rpc GetCustomers(ByNameRequest) returns (stream domain.CustomerState) {
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM customers WHERE name = :customer_name"
+    };
+  }
+}
+
+message ByNameRequest {
+  string customer_name = 1;
+}

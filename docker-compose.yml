@@ -1,7 +1,7 @@
 version: "3"
 services:
   kalix-proxy:
-    image: gcr.io/kalix-public/kalix-proxy:1.0.16
+    image: gcr.io/kalix-public/kalix-proxy:1.0.29
     command: -Dconfig.resource=dev-mode.conf -Dkalix.proxy.eventing.support=google-pubsub-emulator
     ports:
       - "9000:9000"
@@ -10,7 +10,8 @@ services:
     environment:
       USER_FUNCTION_HOST: ${USER_FUNCTION_HOST:-host.docker.internal}
       USER_FUNCTION_PORT: ${USER_FUNCTION_PORT:-8080}
-      PUBSUB_EMULATOR_HOST: gcloud-pubsub-emulator     
+      PUBSUB_EMULATOR_HOST: gcloud-pubsub-emulator
+      ACL_ENABLED: 'true'
       # Uncomment to disable the JWT dev secret
       # JWT_DEV_SECRET: "false"
       # Uncomment to set the JWT dev secret issuer

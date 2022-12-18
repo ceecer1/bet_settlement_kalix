@@ -1,1 +1,3 @@
 grpcurl -plaintext localhost:9000 customer.action.BetSettlement/StartIngestion
+
+{"customerId": "cusId", "amount": 453.09, "won": true, "betId": "1232355"}

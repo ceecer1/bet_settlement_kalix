@@ -4,6 +4,7 @@ import com.google.protobuf.empty.Empty
 import customer.api
 import kalix.scalasdk.valueentity.ValueEntity
 import kalix.scalasdk.valueentity.ValueEntityContext
+import org.slf4j.{Logger, LoggerFactory}
 
 // This class was initially generated based on the .proto definition by Kalix tooling.
 //
@@ -11,6 +12,8 @@ import kalix.scalasdk.valueentity.ValueEntityContext
 // or delete it so it is regenerated as needed.
 
 class Customer(context: ValueEntityContext) extends AbstractCustomer {
+
+  private val log: Logger = LoggerFactory.getLogger(classOf[Customer]);
   override def emptyState: CustomerState = CustomerState()
 
   override def create(currentState: CustomerState, customer: api.Customer): ValueEntity.Effect[Empty] = {
