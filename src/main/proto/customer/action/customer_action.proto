@@ -1,0 +1,20 @@
+syntax = "proto3";
+package customer.action;
+
+import "google/protobuf/empty.proto";
+import "kalix/annotations.proto";
+
+message AMQPBetResult {
+  bool won = 1;
+  double amount = 2;
+  string bet_id = 3;
+  string customer_id = 4;
+}
+
+service BetSettlement {
+  option (kalix.codegen) = {
+    action: {}
+  };
+
+  rpc StartIngestion(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
