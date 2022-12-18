@@ -1,3 +1,8 @@
 grpcurl -plaintext localhost:9000 customer.action.BetSettlement/StartIngestion
 
+grpcurl -d '{"customer_name": "FACTO"}' -plaintext localhost:9000 customer.view.CustomerByName/GetCustomers
+
 {"customerId": "cusId", "amount": 453.09, "won": true, "betId": "1232355"}
+
+{"customerId": "123221", "email": "myemail31", "name": "PACTO", "address": {
+"street": "Road", "city": "KTM"}}

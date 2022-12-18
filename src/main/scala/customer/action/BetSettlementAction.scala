@@ -6,6 +6,7 @@ import kalix.scalasdk.action.ActionCreationContext
 import akka.actor.ActorRef
 import customer.actors.AMQPConsumer.Start
 import customer.api.Customer
+import kalix.scalasdk.DeferredCall
 
 // This class was initially generated based on the .proto definition by Kalix tooling.
 //
@@ -19,7 +20,7 @@ class BetSettlementAction(creationContext: ActionCreationContext,
   override def startIngestion(empty: Empty): Action.Effect[Empty] = {
 
     // deferred call create customer function to pass to actor
-    def deferredCall = (customer: Customer) => {
+    def deferredCall: Customer => DeferredCall[Customer, Empty] = (customer: Customer) => {
       components.customer.create(customer)
     }
 
