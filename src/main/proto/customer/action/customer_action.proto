@@ -7,8 +7,8 @@ import "kalix/annotations.proto";
 message AMQPBetResult {
   bool won = 1;
   double amount = 2;
-  string bet_id = 3;
-  string customer_id = 4;
+  string betId = 3;
+  string customerId = 4;
 }
 
 service BetSettlement {
