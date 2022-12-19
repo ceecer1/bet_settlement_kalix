@@ -4,6 +4,7 @@ import akka.actor.{ActorRef, ActorSystem}
 import akka.stream.Materializer
 import customer.action.BetSettlementAction
 import customer.actors.AMQPConsumer
+import customer.domain.BetResult
 import customer.domain.Customer
 import customer.view.CustomerByNameView
 import kalix.scalasdk.Kalix
@@ -30,10 +31,10 @@ object Main {
     // If you prefer, you may remove this and manually register these components in a
     // `Kalix()` instance.
     KalixFactory.withComponents(
+      new BetResult(_),
       new Customer(_),
       new BetSettlementAction(_, actorRef),
-      new CustomerByNameView(_)
-    )
+      new CustomerByNameView(_))
   }
 
   def main(args: Array[String]): Unit = {

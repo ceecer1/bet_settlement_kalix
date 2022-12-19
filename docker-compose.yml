@@ -12,6 +12,7 @@ services:
       USER_FUNCTION_PORT: ${USER_FUNCTION_PORT:-8080}
       PUBSUB_EMULATOR_HOST: gcloud-pubsub-emulator
       ACL_ENABLED: 'true'
+      VIEW_FEATURES_ALL: 'on'
       # Uncomment to disable the JWT dev secret
       # JWT_DEV_SECRET: "false"
       # Uncomment to set the JWT dev secret issuer

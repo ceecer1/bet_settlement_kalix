@@ -6,7 +6,8 @@ message CustomerState {
     string customer_id = 1;
     string email = 2;
     string name = 3;
-    Address address = 4;
+    double balance = 4;
+    Address address = 5;
   }
   
 message Address {

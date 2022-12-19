@@ -4,13 +4,6 @@ package customer.action;
 import "google/protobuf/empty.proto";
 import "kalix/annotations.proto";
 
-message AMQPBetResult {
-  bool won = 1;
-  double amount = 2;
-  string betId = 3;
-  string customerId = 4;
-}
-
 service BetSettlement {
   option (kalix.codegen) = {
     action: {}

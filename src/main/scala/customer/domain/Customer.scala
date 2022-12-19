@@ -2,6 +2,7 @@ package customer.domain
 
 import com.google.protobuf.empty.Empty
 import customer.api
+import customer.api.UpdateBalanceRequest
 import kalix.scalasdk.valueentity.ValueEntity
 import kalix.scalasdk.valueentity.ValueEntityContext
 import org.slf4j.{Logger, LoggerFactory}
@@ -46,8 +47,15 @@ class Customer(context: ValueEntityContext) extends AbstractCustomer {
     api.Customer(
       customerId = customer.customerId,
       email = customer.email,
-      name = customer.name
+      name = customer.name,
+      balance = customer.balance
     )
 
+  override def updateBalance(currentState: CustomerState, updateBalanceRequest: UpdateBalanceRequest): ValueEntity.Effect[Empty] = {
+    val newState = currentState.copy(balance = currentState.balance + updateBalanceRequest.amount)
+    effects
+      .updateState(newState)
+      .thenReply(Empty.defaultInstance)
+  }
 }
 

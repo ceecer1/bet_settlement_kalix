@@ -20,12 +20,22 @@ class BetSettlementAction(creationContext: ActionCreationContext,
   override def startIngestion(empty: Empty): Action.Effect[Empty] = {
 
     // deferred call create customer function to pass to actor
-    def deferredCall: Customer => DeferredCall[Customer, Empty] = (customer: Customer) => {
+    def customerCreateFn: Customer => DeferredCall[Customer, Empty] = (customer: Customer) => {
       components.customer.create(customer)
     }
 
+    //val reply: Future[NewCartCreated] =
+    //      for {
+    //        created <- components.shoppingCart.create(CreateCart(cartId)).execute()
+    //        populated <- components.shoppingCart.addItem(AddLineItem(cartId, "e", "eggplant", 1)).execute()
+    //      } yield NewCartCreated(cartId)
+
+    for {
+      get <- components.customer.updateBalance()
+    }
+
     //    Start ingestion and return quickly
-    actorRef ! Start(deferredCall)
+    actorRef ! Start(customerCreateFn)
     effects.reply(Empty.defaultInstance)
   }
 }
