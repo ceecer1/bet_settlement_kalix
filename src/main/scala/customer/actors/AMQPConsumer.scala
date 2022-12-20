@@ -8,7 +8,7 @@ import akka.stream.alpakka.amqp.scaladsl.AmqpSource
 import akka.stream.alpakka.amqp.{AmqpLocalConnectionProvider, NamedQueueSourceSettings, QueueDeclaration, ReadResult}
 import akka.stream.scaladsl.{Sink, Source}
 import com.google.protobuf.empty.Empty
-import customer.api.Customer
+import customer.api.{BetResult, UpdateBalanceRequest}
 import kalix.scalasdk.DeferredCall
 import org.json4s.NoTypeHints
 import org.json4s.native.Serialization
@@ -17,7 +17,7 @@ import org.json4s.native.Serialization.read
 object AMQPConsumer {
   def props(): Props = Props(new AMQPConsumer)
 
-  case class Start(deferredCreateFunction: Customer => DeferredCall[Customer, Empty])
+  case class Start(updateCustomerBalanceFn: UpdateBalanceRequest => DeferredCall[UpdateBalanceRequest, Empty])
   case object Stop
 }
 
@@ -42,10 +42,11 @@ class AMQPConsumer extends Actor {
           bufferSize = 10
         )
       amqpSource
-        .map({ x => read[Customer](x.bytes.utf8String) })
-        .map { customer =>
-          log.info("Live tail from AMQP queue: " + customer)
-          deferredCreateFunction(customer).execute()
+        .map({ x => read[BetResult](x.bytes.utf8String) })
+        .map { betResult =>
+          log.info("Live tail from AMQP queue: " + betResult)
+          val updateBalance = UpdateBalanceRequest(betResult.customerId, betResult.amount)
+          deferredCreateFunction(updateBalance).execute()
         }
         .runWith(Sink.ignore)
 

@@ -5,7 +5,7 @@ import kalix.scalasdk.action.Action
 import kalix.scalasdk.action.ActionCreationContext
 import akka.actor.ActorRef
 import customer.actors.AMQPConsumer.Start
-import customer.api.Customer
+import customer.api.{Customer, UpdateBalanceRequest}
 import kalix.scalasdk.DeferredCall
 
 // This class was initially generated based on the .proto definition by Kalix tooling.
@@ -30,9 +30,10 @@ class BetSettlementAction(creationContext: ActionCreationContext,
     //        populated <- components.shoppingCart.addItem(AddLineItem(cartId, "e", "eggplant", 1)).execute()
     //      } yield NewCartCreated(cartId)
 
-    for {
-      get <- components.customer.updateBalance()
-    }
+    def updateCustomerBalanceFn: UpdateBalanceRequest => DeferredCall[UpdateBalanceRequest, Empty] =
+      (request: UpdateBalanceRequest) => {
+        components.customer.updateBalance(request)
+      }
 
     //    Start ingestion and return quickly
     actorRef ! Start(customerCreateFn)
