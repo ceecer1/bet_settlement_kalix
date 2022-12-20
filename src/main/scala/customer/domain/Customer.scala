@@ -27,6 +27,7 @@ class Customer(context: ValueEntityContext) extends AbstractCustomer {
       customerId = customer.customerId,
       email = customer.email,
       name = customer.name,
+      balance = customer.balance,
       address = customer.address.map(convertToDomain)
     )
 
@@ -52,6 +53,7 @@ class Customer(context: ValueEntityContext) extends AbstractCustomer {
     )
 
   override def updateBalance(currentState: CustomerState, updateBalanceRequest: UpdateBalanceRequest): ValueEntity.Effect[Empty] = {
+    log.info("Update balance method hit with detail: " + updateBalanceRequest.toString)
     val newState = currentState.copy(balance = currentState.balance + updateBalanceRequest.amount)
     effects
       .updateState(newState)

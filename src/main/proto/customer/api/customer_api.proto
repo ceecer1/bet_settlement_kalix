@@ -23,7 +23,7 @@ message GetCustomerRequest {
 }
 
 message UpdateBalanceRequest {
-  string customerId = 1;
+  string customerId = 1 [(kalix.field).entity_key = true];
   double amount = 2;
 }
 

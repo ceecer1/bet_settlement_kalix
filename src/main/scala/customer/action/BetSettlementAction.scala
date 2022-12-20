@@ -36,7 +36,7 @@ class BetSettlementAction(creationContext: ActionCreationContext,
       }
 
     //    Start ingestion and return quickly
-    actorRef ! Start(customerCreateFn)
+    actorRef ! Start(updateCustomerBalanceFn)
     effects.reply(Empty.defaultInstance)
   }
 }

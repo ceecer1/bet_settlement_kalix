@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 import "kalix/annotations.proto";
 
 message BetResult {
-  string betId = 1;
+  string betId = 1 [(kalix.field).entity_key = true];
   string customerId = 2;
   double amount = 3;
   bool won = 4;

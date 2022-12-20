@@ -1,7 +1,5 @@
 package customer.view
 
-import customer.domain.CustomerState
-import kalix.scalasdk.view.View.UpdateEffect
 import kalix.scalasdk.view.ViewContext
 
 // This class was initially generated based on the .proto definition by Kalix tooling.
