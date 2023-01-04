@@ -25,22 +25,18 @@ object Main {
   implicit val mat: Materializer = Materializer(system)
   implicit val ec: ExecutionContext = system.dispatcher
 
-  def createKalix(actorRef: ActorRef): Kalix = {
-    // The KalixFactory automatically registers any generated Actions, Views or Entities,
-    // and is kept up-to-date with any changes in your protobuf definitions.
-    // If you prefer, you may remove this and manually register these components in a
-    // `Kalix()` instance.
+  def createKalix(): Kalix = {
     KalixFactory.withComponents(
       new BetResult(_),
       new Customer(_),
-      new BetSettlementAction(_, actorRef),
-      new CustomerByNameView(_))
+      ctx => new BetSettlementAction(ctx, ctx.materializer().system.actorOf(AMQPConsumer.props())),
+      new CustomerByNameView(_),
+    )
   }
 
   def main(args: Array[String]): Unit = {
-    val queueConsumer = system.actorOf(AMQPConsumer.props())
 
     log.info("starting the Kalix service")
-    createKalix(queueConsumer).start()
+    createKalix().start()
   }
 }

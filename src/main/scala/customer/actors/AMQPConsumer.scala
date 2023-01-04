@@ -14,10 +14,13 @@ import org.json4s.NoTypeHints
 import org.json4s.native.Serialization
 import org.json4s.native.Serialization.read
 
+import scala.concurrent.Future
+
 object AMQPConsumer {
   def props(): Props = Props(new AMQPConsumer)
 
   case class Start(updateCustomerBalanceFn: UpdateBalanceRequest => DeferredCall[UpdateBalanceRequest, Empty])
+//  case class Start(BetResult => Future[Empty])
   case object Stop
 }
 

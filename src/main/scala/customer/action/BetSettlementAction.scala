@@ -5,8 +5,10 @@ import kalix.scalasdk.action.Action
 import kalix.scalasdk.action.ActionCreationContext
 import akka.actor.ActorRef
 import customer.actors.AMQPConsumer.Start
-import customer.api.{Customer, UpdateBalanceRequest}
+import customer.api.{BetResult, Customer, UpdateBalanceRequest}
 import kalix.scalasdk.DeferredCall
+
+import scala.concurrent.Future
 
 // This class was initially generated based on the .proto definition by Kalix tooling.
 //
@@ -35,8 +37,20 @@ class BetSettlementAction(creationContext: ActionCreationContext,
         components.customer.updateBalance(request)
       }
 
+    def createBetResultFn: BetResult => DeferredCall[BetResult, Empty] =
+      (betResult: BetResult) => {
+        components.betResult.create(betResult)
+      }
+
+//    def handle: BetResult => Future[Empty] = (betResult: BetResult) => for {
+//      _ <- createBetResultFn(betResult)
+//      b <- updateCustomerBalanceFn(UpdateBalanceRequest(betResult.customerId, betResult.amount))
+//    } yield b
+
+
     //    Start ingestion and return quickly
     actorRef ! Start(updateCustomerBalanceFn)
+//    actorRef ! Start(handle)
     effects.reply(Empty.defaultInstance)
   }
 }
